@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.apache.commons.io.FileUtils;
 import org.jspecify.annotations.Nullable;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -18,23 +21,30 @@ import io.appium.java_client.screenrecording.CanRecordScreen;
 import static org.testng.Assert.assertEquals;
 
 public class Test2 {
-
-	public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
+	
+	AppiumDriver driver;
+	
+	@BeforeTest
+	public void beforeTest() throws URISyntaxException, MalformedURLException {
 		UiAutomator2Options options = new UiAutomator2Options().setDeviceName("pixel_5").
 				setAutomationName("uiautomator2").
 				setApp("C:\\Users\\jdiezrodriguez\\Documents\\AutomationTesting\\FirstAppiumProjectt\\src\\test\\resources\\example.apk");
 		
 		URI url = new URI("http://0.0.0.0:4723");
 		
-		AppiumDriver driver = new AndroidDriver(url.toURL(), options);
+		driver = new AndroidDriver(url.toURL(), options);
 		
 		driver.findElement(AppiumBy.id("android:id/button1")).click();
-
-		//startRecording(driver);
-		//checkPresenceOfElements(driver);
-		validationCheckBoxes(driver);
-		//stopRecording(driver);
 	}
+
+	@Test
+	public void allTests() throws IOException, InterruptedException {
+		startRecording(driver);
+		checkPresenceOfElements(driver);
+		validationCheckBoxes(driver);
+		stopRecording(driver);
+	}
+	
 	
 	public static void checkPresenceOfElements(AppiumDriver driver) throws IOException {
 		String image1 = "Screenshots" + File.separator + "PresenceOfElements" + ".png";
